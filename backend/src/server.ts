@@ -1,7 +1,16 @@
 import app from "./app";
+import { initDatabase } from "./config/db";
 
-const port = process.env.PORT || 3000;
+const port = Number(process.env.PORT) || 3000;
 
-app.listen(port, () => {
-  console.log(`🔥 Server running at port http://localhost:${port}`);
+const startServer = async () => {
+  await initDatabase();
+  app.listen(port, () => {
+    console.log(`🔥 Server running at http://localhost:${port}`);
+  });
+};
+
+startServer().catch((error) => {
+  console.error("Failed to start server:", error);
+  process.exit(1);
 });
